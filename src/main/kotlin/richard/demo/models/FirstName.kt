@@ -9,8 +9,6 @@ import org.example.richard.demo.predicates.and
 import org.example.richard.demo.predicates.ShorterThanPredicate
 import org.example.richard.demo.show.Show
 
-data class InvalidFirstName(val invalidName: String)
-
 @JvmInline
 value class FirstName private constructor(val v: String) {
     companion object {
