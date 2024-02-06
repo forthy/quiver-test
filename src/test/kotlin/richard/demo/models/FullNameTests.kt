@@ -13,14 +13,15 @@ import org.example.richard.demo.models.MiddleName
 
 class FullNameTests : FunSpec({
     test("FullName should be properly constructed") {
-        Either.zipOrAccumulate(FirstName.of("Richard"), LastName.of("Chuo"), FullName.of(none()).uncurried()).fold(
-            { _ -> shouldFail { println("FullName construction failed") } },
-            { v ->
-                v.mn.shouldBe(none())
-                v.fn.v.shouldBe("Richard")
-                v.ln.v.shouldBe("Chuo")
-            }
-        )
+        Either.zipOrAccumulate(FirstName.of("Richard"), LastName.of("Chuo"), FullName.withoutMiddleNameOf().uncurried())
+            .fold(
+                { _ -> shouldFail { println("FullName construction failed") } },
+                { v ->
+                    v.mn.shouldBe(none())
+                    v.fn.v.shouldBe("Richard")
+                    v.ln.v.shouldBe("Chuo")
+                }
+            )
 
         Either.zipOrAccumulate(
             FirstName.of("Richard"),
