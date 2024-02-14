@@ -1,4 +1,4 @@
-package org.example.richard.demo.predicates
+package richard.demo.predicates
 
 import arrow.core.Predicate
 

@@ -1,17 +1,16 @@
 package richard.demo.models
 
 import arrow.core.left
-import io.kotest.assertions.shouldFail
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
-import org.example.richard.demo.models.InvalidLastName
-import org.example.richard.demo.models.LastName
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 
-class LastNameTests : FunSpec({
-    test("LastName should be properly constructed") {
-        LastName.of("").shouldBe(InvalidLastName("").left())
+class LastNameTests {
+    @Test
+    fun `LastName should be properly constructed`() {
+        Assertions.assertEquals(InvalidLastName("").left(), LastName.of(""))
 
         LastName.of("Longjohns")
-            .fold({ _ -> shouldFail { println("The last name should be valid") } }, { n -> n.v.shouldBe("Longjohns") })
+            .fold({ _ -> fail { "The last name should be valid" } }, { n -> Assertions.assertEquals("Longjohns", n.v) })
     }
-})
+}

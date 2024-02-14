@@ -1,14 +1,13 @@
 package richard.demo.predicates.mongodb
 
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.booleans.shouldBeTrue
-import org.example.richard.demo.predicates.mongodb.ValidMongoDBUriPredicate
+import com.mongodb.assertions.Assertions
+import org.junit.jupiter.api.Test
 
-class ValidMongoDBUriPredicateTests : FunSpec({
-    test("ValidMongoDBUriPredicate should properly verify a string for a valid MongoDB URI") {
-        ValidMongoDBUriPredicate("").shouldBeFalse()
-        ValidMongoDBUriPredicate("hello").shouldBeFalse()
-        ValidMongoDBUriPredicate("mongodb://richard:password@test.com:7732").shouldBeTrue()
+class ValidMongoDBUriPredicateTests {
+    @Test
+    fun `ValidMongoDBUriPredicate should properly verify a string for a valid MongoDB URI`() {
+        Assertions.assertFalse(ValidMongoDBUriPredicate(""))
+        Assertions.assertFalse(ValidMongoDBUriPredicate("hello"))
+        Assertions.assertTrue(ValidMongoDBUriPredicate("mongodb://richard:password@test.com:7732"))
     }
-})
+}

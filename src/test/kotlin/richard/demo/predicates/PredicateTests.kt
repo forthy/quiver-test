@@ -1,64 +1,64 @@
 package richard.demo.predicates
 
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.booleans.shouldBeTrue
-import org.example.richard.demo.predicates.*
+import com.mongodb.assertions.Assertions
+import org.junit.jupiter.api.Test
 
-class PredicateTests : FunSpec({
-    test("NonEmptyStringPredicate should properly verify non-empty string cases") {
-        NonEmptyStringPredicate("").shouldBeFalse()
-        NonEmptyStringPredicate("test").shouldBeTrue()
+class PredicateTests {
+    @Test
+    fun`NonEmptyStringPredicate should properly verify non-empty string cases`() {
+        Assertions.assertFalse(NonEmptyStringPredicate(""))
+        Assertions.assertTrue(NonEmptyStringPredicate("test"))
     }
 
-    test("ShorterThanPredicate should properly verify the given string based on the defined char length") {
+    @Test
+    fun`ShorterThanPredicate should properly verify the given string based on the defined char length`() {
         val p = ShorterThanPredicate(5)
 
         // TODO - how about the string length is zero?
-        p("").shouldBeFalse()
-        p("abcd").shouldBeTrue()
-        p("abcde").shouldBeTrue()
-        p("abcdef").shouldBeFalse()
+        Assertions.assertFalse(p(""))
+        Assertions.assertTrue(p("abcd"))
+        Assertions.assertTrue(p("abcde"))
+        Assertions.assertFalse(p("abcdef"))
     }
 
-    test("Verify 'and' operation") {
+    fun`Verify 'and' operation`() {
         val p = and(NonEmptyStringPredicate)(ShorterThanPredicate(5))
 
-        p("").shouldBeFalse()
-        p("abcd").shouldBeTrue()
-        p("abcdef").shouldBeFalse()
+        Assertions.assertFalse(p(""))
+        Assertions.assertTrue(p("abcd"))
+        Assertions.assertFalse(p("abcdef"))
     }
 
-    test("Verify 'or' operation") {
+    fun`Verify 'or' operation`() {
         val p = or(NonEmptyStringPredicate)(ShorterThanPredicate(5))
 
         // TODO - Till this case, I realised the functional spec of 'ShorterThanPredicate' should include the lower bound (> 0)
-        p("").shouldBeFalse()
-        p("abcd").shouldBeTrue()
-        p("abcdef").shouldBeTrue()
+        Assertions.assertFalse(p(""))
+        Assertions.assertTrue(p("abcd"))
+        Assertions.assertTrue(p("abcdef"))
     }
 
-    test("Verify 'not' operation") {
-        not(NonEmptyStringPredicate)("").shouldBeTrue()
-        not(NonEmptyStringPredicate)("abc").shouldBeFalse()
+    fun`Verify 'not' operation`() {
+        Assertions.assertTrue(not(NonEmptyStringPredicate)(""))
+        Assertions.assertFalse(not(NonEmptyStringPredicate)("abc"))
 
         val p = ShorterThanPredicate(5)
 
-        not(p)("").shouldBeTrue()
-        not(p)("abcd").shouldBeFalse()
-        not(p)("abcde").shouldBeFalse()
-        not(p)("abcdef").shouldBeTrue()
+        Assertions.assertTrue(not(p)(""))
+        Assertions.assertFalse(not(p)("abcd"))
+        Assertions.assertFalse(not(p)("abcde"))
+        Assertions.assertTrue(not(p)("abcdef"))
     }
 
-    test("IPv4Predicate should properly verify a given string for a possible IPv4 IP") {
-        IPv4Predicate("255.120.223.13").shouldBeTrue()
-        IPv4Predicate("127.0.0.1").shouldBeTrue()
-        IPv4Predicate("").shouldBeFalse()
+    fun`IPv4Predicate should properly verify a given string for a possible IPv4 IP`() {
+        Assertions.assertTrue(IPv4Predicate("255.120.223.13"))
+        Assertions.assertTrue(IPv4Predicate("127.0.0.1"))
+        Assertions.assertFalse(IPv4Predicate(""))
     }
-    test("IPv6Predicate should properly verify a given string for a possible IPv6 IP") {
-        IPv6Predicate("2001:db8:3333:4444:5555:6666:7777:8888").shouldBeTrue()
-        IPv6Predicate("2001:db8::").shouldBeTrue()
-        IPv6Predicate("::").shouldBeTrue()
-        IPv6Predicate("").shouldBeFalse()
+    fun`IPv6Predicate should properly verify a given string for a possible IPv6 IP`() {
+        Assertions.assertTrue(IPv6Predicate("2001:db8:3333:4444:5555:6666:7777:8888"))
+        Assertions.assertTrue(IPv6Predicate("2001:db8::"))
+        Assertions.assertTrue(IPv6Predicate("::"))
+        Assertions.assertFalse(IPv6Predicate(""))
     }
-})
+}

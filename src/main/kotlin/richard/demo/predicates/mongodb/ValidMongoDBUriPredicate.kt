@@ -1,4 +1,4 @@
-package org.example.richard.demo.predicates.mongodb
+package richard.demo.predicates.mongodb
 
 import arrow.core.Option
 import arrow.core.Predicate

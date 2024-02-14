@@ -1,4 +1,4 @@
-package org.example.richard.demo.models
+package richard.demo.models
 
 sealed interface DomainError
 

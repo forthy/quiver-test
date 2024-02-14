@@ -1,23 +1,22 @@
 package richard.demo.config
 
 import arrow.core.left
-import io.kotest.assertions.shouldFail
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
-import org.example.richard.demo.config.InvalidDBUri
-import org.example.richard.demo.config.MongoDBUri
-import org.example.richard.demo.predicates.NonEmptyStringPredicate
-import org.example.richard.demo.predicates.and
-import org.example.richard.demo.predicates.mongodb.ValidMongoDBUriPredicate
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
+import richard.demo.predicates.NonEmptyStringPredicate
+import richard.demo.predicates.and
+import richard.demo.predicates.mongodb.ValidMongoDBUriPredicate
 
-class MongoDBUriTests : FunSpec({
-    test("Should properly construct a MongoDBUri") {
+class MongoDBUriTests {
+    @Test
+    fun `Should properly construct a MongoDBUri`() {
         val c = MongoDBUri.ofWithPredicate(and(NonEmptyStringPredicate)(ValidMongoDBUriPredicate))
 
-        c("").shouldBe(InvalidDBUri("").left())
-        c("hello").shouldBe(InvalidDBUri("hello").left())
+        Assertions.assertEquals(InvalidDBUri("").left(), c(""))
+        Assertions.assertEquals(InvalidDBUri("hello").left(), c("hello"))
         c("mongodb://richard:password@test.com:7732").getOrNone()
-            .fold({ shouldFail { println("The MongoDB URI should be valid") } },
-                { uri -> uri.v.shouldBe("mongodb://richard:password@test.com:7732") })
+            .fold({ fail { "The MongoDB URI should be valid" } },
+                { uri -> Assertions.assertEquals("mongodb://richard:password@test.com:7732", uri.v) })
     }
-})
+}

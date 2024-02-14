@@ -1,4 +1,4 @@
-package org.example.richard.demo.repo.config
+package richard.demo.repo.config
 
 import arrow.core.Option
 import arrow.core.some

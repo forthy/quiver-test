@@ -1,13 +1,13 @@
-package org.example.richard.demo.models
+package richard.demo.models
 
 import arrow.core.Either
 import arrow.core.Predicate
 import arrow.core.raise.either
 import arrow.core.raise.ensure
-import org.example.richard.demo.predicates.NonEmptyStringPredicate
-import org.example.richard.demo.predicates.and
-import org.example.richard.demo.predicates.ShorterThanPredicate
-import org.example.richard.demo.show.Show
+import richard.demo.predicates.NonEmptyStringPredicate
+import richard.demo.predicates.and
+import richard.demo.predicates.ShorterThanPredicate
+import richard.demo.show.Show
 
 @JvmInline
 value class FirstName private constructor(val v: String) {

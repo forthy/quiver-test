@@ -1,4 +1,4 @@
-package org.example.richard.demo.models
+package richard.demo.models
 
 import arrow.core.None
 import arrow.core.Option

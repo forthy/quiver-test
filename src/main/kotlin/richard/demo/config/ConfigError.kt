@@ -1,4 +1,4 @@
-package org.example.richard.demo.config
+package richard.demo.config
 
 sealed interface ConfigError
 

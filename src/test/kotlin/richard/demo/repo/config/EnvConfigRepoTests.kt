@@ -1,22 +1,21 @@
 package richard.demo.repo.config
 
-import arrow.core.memoize
 import io.github.cdimascio.dotenv.dotenv
-import io.kotest.assertions.shouldFail
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
-import org.example.richard.demo.repo.config.EnvConfigRepo
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 
-class EnvConfigRepoTests : FunSpec({
-    test("Should read a configuration as a string") {
-        val envM = { dotenv() }.memoize()
-        
-        EnvConfigRepo.readAs<String>(envM)("MONGODB_URI").fold({ shouldFail { println("MONGODB_URI should be available") } },
-            { uri -> uri.shouldBe("mongodb://richard:password@test.com:7732") })
+class EnvConfigRepoTests {
+    @Test
+    fun `Should read a configuration as a string`() {
+        val envM by lazy { dotenv() }
 
-        EnvConfigRepo.readAs<Int>(envM)("TCP_PORT").fold(
-            { shouldFail { println("TCP_PORT should be available") } },
-            { port -> port.shouldBe(800) }
+        EnvConfigRepo.readAs<String> { envM }("MONGODB_URI").fold({ fail { "MONGODB_URI should be available" } },
+            { uri -> Assertions.assertEquals("mongodb://richard:password@test.com:7732", uri) })
+
+        EnvConfigRepo.readAs<Int> { envM }("TCP_PORT").fold(
+            { fail { "TCP_PORT should be available" } },
+            { port -> Assertions.assertEquals(800, port) }
         )
     }
-})
+}
